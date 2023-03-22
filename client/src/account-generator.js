@@ -4,8 +4,7 @@ const { toHex } = require('ethereum-cryptography/utils')
 const generateNewAccount = function () {
     const privateKey = secp.utils.randomPrivateKey()
     const publicKey = secp.getPublicKey(privateKey)
-    localStorage.setItem(publicKey, privateKey);
-    return publicKey
+    return { publicKey, privateKey }
 }
 
 export default generateNewAccount
