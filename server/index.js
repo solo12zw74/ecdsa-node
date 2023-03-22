@@ -7,10 +7,12 @@ app.use(cors());
 app.use(express.json());
 
 const balances = {
-  "0x1": 100,
-  "0x2": 50,
-  "0x3": 75,
+  "genesis": 1000
 };
+
+app.get("/accounts", (req, res) => {
+  res.send(balances);
+});
 
 app.get("/balance/:address", (req, res) => {
   const { address } = req.params;
@@ -31,6 +33,16 @@ app.post("/send", (req, res) => {
     balances[recipient] += amount;
     res.send({ balance: balances[sender] });
   }
+});
+
+app.post("/register/:account", (req, res) => {
+  const { account } = req.params;
+
+  if (!balances[account]) {
+    balances[account] = 0
+  }
+  
+  res.send({ balance: balances[account] });
 });
 
 app.listen(port, () => {
