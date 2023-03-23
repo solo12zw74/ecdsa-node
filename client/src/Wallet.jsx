@@ -8,6 +8,9 @@ function Wallet({ address, setAddress, balance, setBalance, accounts }) {
     setAddress(address);
     setBalance(await getBalance(address))
   }
+  async function createAccount() {
+    console.log('Going to create account')
+  }
 
   return (
     <div className="container wallet">
@@ -19,6 +22,7 @@ function Wallet({ address, setAddress, balance, setBalance, accounts }) {
       </label>
 
       <div className="balance">Balance: {balance}</div>
+      <button className="button" onClick={createAccount}>Create account</button>
     </div>
   );
 }
