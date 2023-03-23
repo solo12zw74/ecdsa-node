@@ -27,6 +27,7 @@ function App() {
         address={address}
         setAddress={setAddress}
         accounts={accounts}
+        setAccounts={setAccounts}
       />
       <Transfer setBalance={setBalance} address={address} />
     </div>

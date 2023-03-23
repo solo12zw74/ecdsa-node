@@ -19,7 +19,11 @@ export async function getAccounts() {
   const {
     data,
   } = await server.get("accounts")
-  return data.map(x => ({ label: x, value: x }))
+  return data.map(x => ({ label: x.substring(0,10), value: x }))
+}
+export async function registerAccount(publicKey){
+  const res = await server.post(`/register/${publicKey}`)
+  console.log(res)
 }
 
 export default server

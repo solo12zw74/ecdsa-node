@@ -1,15 +1,17 @@
 import { useEffect, useState } from "react";
-import { getAccounts, getBalance } from "./server";
+import { registerAccount, getBalance, getAccounts } from "./server";
 import Select from 'react-select'
 
-function Wallet({ address, setAddress, balance, setBalance, accounts }) {
+function Wallet({ address, setAddress, balance, setBalance, accounts, setAccounts }) {
   async function onChange(evt) {
     const address = evt.value;
     setAddress(address);
     setBalance(await getBalance(address))
   }
   async function createAccount() {
-    console.log('Going to create account')
+    await registerAccount('random')
+    const accs = await getAccounts()
+    setAccounts(accs)
   }
 
   return (
