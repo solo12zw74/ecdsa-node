@@ -1,3 +1,6 @@
+import { verify } from 'ethereum-cryptography/secp256k1'
+const { sha256 } = require("ethereum-cryptography/sha256");
+
 const express = require("express");
 const app = express();
 const cors = require("cors");
@@ -21,10 +24,15 @@ app.get("/balance/:address", (req, res) => {
 });
 
 app.post("/send", (req, res) => {
-  const { sender, recipient, amount } = req.body;
+  const { sender, recipient, amount, signature } = req.body;
 
   setInitialBalance(sender);
   setInitialBalance(recipient);
+
+  if (!verifySignature(signature, recipient+amount, sender)){
+    res.status(400).send({ message: "Invalid signature!" });
+    return;
+  }
 
   if (balances[sender] < amount) {
     res.status(400).send({ message: "Not enough funds!" });
@@ -53,4 +61,8 @@ function setInitialBalance(address) {
   if (!balances[address]) {
     balances[address] = 0;
   }
+}
+
+function verifySignature(signature, data, publicKey) {
+  return verify(signature, sha256(data), publicKey)
 }
