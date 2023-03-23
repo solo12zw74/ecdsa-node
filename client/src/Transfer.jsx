@@ -2,27 +2,31 @@ import { useState } from "react";
 import server from "./server";
 import { signSync } from "ethereum-cryptography/secp256k1"
 import { sha256 } from "ethereum-cryptography/sha256"
+import Select from "react-select"
+import { hexToBytes, toHex, utf8ToBytes } from "ethereum-cryptography/utils";
 
-function Transfer({ address, setBalance }) {
+function Transfer({ address, setBalance, accounts }) {
   const [sendAmount, setSendAmount] = useState("");
   const [recipient, setRecipient] = useState("");
 
   const setValue = (setter) => (evt) => setter(evt.target.value);
+  const setSelectValue = (setter) => (evt) => setter(evt.value);
+
 
   async function transfer(evt) {
     evt.preventDefault();
     const privateKey = localStorage.getItem(address)
-
-    const signature = signSync(sha256(recipient + amount), privateKey)
+    const amount = parseInt(sendAmount)
+    const signature = toHex(signSync(sha256(utf8ToBytes(recipient + amount)), hexToBytes(privateKey)))
 
     try {
       const {
         data: { balance },
       } = await server.post(`send`, {
         sender: address,
-        amount: parseInt(sendAmount),
+        amount,
         recipient,
-        signature: signature
+        signature
       });
       setBalance(balance);
     } catch (ex) {
@@ -45,11 +49,7 @@ function Transfer({ address, setBalance }) {
 
       <label>
         Recipient
-        <input
-          placeholder="Type an address, for example: 0x2"
-          value={recipient}
-          onChange={setValue(setRecipient)}
-        ></input>
+        <Select options={accounts} value={{ label: recipient, value: recipient }} onChange={setSelectValue(setRecipient)}></Select>
       </label>
 
       <input type="submit" className="button" value="Transfer" />

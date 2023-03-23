@@ -10,8 +10,8 @@ function Wallet({ address, setAddress, balance, setBalance, accounts, setAccount
   }
   async function createAccount() {
     const { publicKey, privateKey } = generateNewAccount()
-    const res = await registerAccount(publicKey)
-    if (res.status == 200) {
+    const success = await registerAccount(publicKey)
+    if (success) {
       localStorage.setItem(publicKey, privateKey)
     }
     const accs = await getAccounts()

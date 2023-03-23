@@ -29,7 +29,7 @@ function App() {
         accounts={accounts}
         setAccounts={setAccounts}
       />
-      <Transfer setBalance={setBalance} address={address} />
+      <Transfer setBalance={setBalance} address={address} accounts={accounts} />
     </div>
   );
 }

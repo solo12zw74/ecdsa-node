@@ -1,5 +1,6 @@
-import { verify } from 'ethereum-cryptography/secp256k1'
+const { verify } = require('ethereum-cryptography/secp256k1')
 const { sha256 } = require("ethereum-cryptography/sha256");
+const { utf8ToBytes } = require("ethereum-cryptography/utils");
 
 const express = require("express");
 const app = express();
@@ -29,7 +30,7 @@ app.post("/send", (req, res) => {
   setInitialBalance(sender);
   setInitialBalance(recipient);
 
-  if (!verifySignature(signature, recipient+amount, sender)){
+  if (!verifySignature(signature, recipient + amount, sender)) {
     res.status(400).send({ message: "Invalid signature!" });
     return;
   }
@@ -47,7 +48,7 @@ app.post("/register/:account", (req, res) => {
   const { account } = req.params;
 
   if (!balances[account]) {
-    balances[account] = 0
+    balances[account] = 1000
   }
 
   res.send({ balance: balances[account] });
@@ -64,5 +65,5 @@ function setInitialBalance(address) {
 }
 
 function verifySignature(signature, data, publicKey) {
-  return verify(signature, sha256(data), publicKey)
+  return verify(signature, sha256(utf8ToBytes(data)), publicKey)
 }

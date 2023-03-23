@@ -23,7 +23,7 @@ export async function getAccounts() {
 }
 export async function registerAccount(publicKey){
   const res = await server.post(`/register/${publicKey}`)
-  console.log(res)
+  return res.status == 200
 }
 
 export default server
