@@ -15,4 +15,11 @@ export async function getBalance(address) {
   }
 }
 
-export default server;
+export async function getAccounts() {
+  const {
+    data: { accounts },
+  } = await server.get("accounts")
+  return accounts
+}
+
+export default server

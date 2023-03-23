@@ -1,4 +1,4 @@
-import { getBalance } from "./server";
+import { getAccounts, getBalance } from "./server";
 
 function Wallet({ address, setAddress, balance, setBalance }) {
   async function onChange(evt) {

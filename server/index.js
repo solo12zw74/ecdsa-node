@@ -11,7 +11,7 @@ const balances = {
 };
 
 app.get("/accounts", (req, res) => {
-  res.send(balances);
+  res.send(Object.keys(balances));
 });
 
 app.get("/balance/:address", (req, res) => {
