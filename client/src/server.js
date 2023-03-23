@@ -17,9 +17,9 @@ export async function getBalance(address) {
 
 export async function getAccounts() {
   const {
-    data: { accounts },
+    data,
   } = await server.get("accounts")
-  return accounts
+  return data.map(x => ({ label: x, value: x }))
 }
 
 export default server

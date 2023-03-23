@@ -7,15 +7,17 @@ import { useEffect, useState } from "react";
 function App() {
   const [address, setAddress] = useState('genesis');
   const [balance, setBalance] = useState(0);
-  const [accounts, setAccounts] = useState([({ label: "genesis", value: "genesis" })])
+  const [accounts, setAccounts] = useState([])
 
   useEffect(() => {
     const fetchData = async () => {
+      const accs = await getAccounts()
+      setAccounts(accs)
       const data = await getBalance(address)
       setBalance(data)
     }
     fetchData();
-  }, [balance])
+  }, [])
 
   return (
     <div className="app">
