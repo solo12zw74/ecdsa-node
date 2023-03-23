@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
 import { registerAccount, getBalance, getAccounts } from "./server";
 import Select from 'react-select'
+import generateNewAccount from './account-generator'
 
 function Wallet({ address, setAddress, balance, setBalance, accounts, setAccounts }) {
   async function onChange(evt) {
@@ -9,7 +9,11 @@ function Wallet({ address, setAddress, balance, setBalance, accounts, setAccount
     setBalance(await getBalance(address))
   }
   async function createAccount() {
-    await registerAccount('random')
+    const { publicKey, privateKey } = generateNewAccount()
+    const res = await registerAccount(publicKey)
+    if (res.status == 200) {
+      localStorage.setItem(publicKey, privateKey)
+    }
     const accs = await getAccounts()
     setAccounts(accs)
   }

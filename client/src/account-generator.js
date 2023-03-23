@@ -1,9 +1,9 @@
-const secp = require('ethereum-cryptography/secp256k1')
-const { toHex } = require('ethereum-cryptography/utils')
+import { utils, getPublicKey } from 'ethereum-cryptography/secp256k1'
+import { toHex } from 'ethereum-cryptography/utils'
 
-const generateNewAccount = function () {
-    const privateKey = secp.utils.randomPrivateKey()
-    const publicKey = secp.getPublicKey(privateKey)
+function generateNewAccount() {
+    const privateKey = toHex(utils.randomPrivateKey())
+    const publicKey = toHex(getPublicKey(privateKey))
     return { publicKey, privateKey }
 }
 
