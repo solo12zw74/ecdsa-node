@@ -1,5 +1,7 @@
 import { useState } from "react";
 import server from "./server";
+import { signSync } from "ethereum-cryptography/secp256k1"
+import { sha256 } from "ethereum-cryptography/sha256"
 
 function Transfer({ address, setBalance }) {
   const [sendAmount, setSendAmount] = useState("");
@@ -9,6 +11,9 @@ function Transfer({ address, setBalance }) {
 
   async function transfer(evt) {
     evt.preventDefault();
+    const privateKey = localStorage.getItem(address)
+
+    const signature = signSync(sha256(recipient + amount), privateKey)
 
     try {
       const {
@@ -17,6 +22,7 @@ function Transfer({ address, setBalance }) {
         sender: address,
         amount: parseInt(sendAmount),
         recipient,
+        signature: signature
       });
       setBalance(balance);
     } catch (ex) {
