@@ -41,7 +41,7 @@ app.post("/register/:account", (req, res) => {
   if (!balances[account]) {
     balances[account] = 0
   }
-  
+
   res.send({ balance: balances[account] });
 });
 

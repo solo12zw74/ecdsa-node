@@ -1,15 +1,20 @@
 import Wallet from "./Wallet";
 import Transfer from "./Transfer";
 import "./App.scss";
-import { getBalance } from './server';
+import { getAccounts, getBalance } from './server';
 import { useEffect, useState } from "react";
 
 function App() {
   const [address, setAddress] = useState('genesis');
   const [balance, setBalance] = useState(0);
+  const [accounts, setAccounts] = useState([({ label: "genesis", value: "genesis" })])
 
-  useEffect(() => async function() {
-    setBalance(await getBalance(address))
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await getBalance(address)
+      setBalance(data)
+    }
+    fetchData();
   }, [balance])
 
   return (
@@ -19,6 +24,7 @@ function App() {
         setBalance={setBalance}
         address={address}
         setAddress={setAddress}
+        accounts={accounts}
       />
       <Transfer setBalance={setBalance} address={address} />
     </div>

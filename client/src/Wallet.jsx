@@ -1,8 +1,10 @@
+import { useEffect, useState } from "react";
 import { getAccounts, getBalance } from "./server";
+import Select from 'react-select'
 
-function Wallet({ address, setAddress, balance, setBalance }) {
+function Wallet({ address, setAddress, balance, setBalance, accounts }) {
   async function onChange(evt) {
-    const address = evt.target.value;
+    const address = evt.value;
     setAddress(address);
     setBalance(await getBalance(address))
   }
@@ -13,7 +15,7 @@ function Wallet({ address, setAddress, balance, setBalance }) {
 
       <label>
         Wallet Address
-        <input placeholder="Type an address, for example: 0x1" value={address} onChange={onChange}></input>
+        <Select options={accounts} value={{ label: address, value: address }} onChange={onChange}></Select>
       </label>
 
       <div className="balance">Balance: {balance}</div>
