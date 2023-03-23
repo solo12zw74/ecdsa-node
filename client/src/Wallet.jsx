@@ -1,17 +1,10 @@
-import server from "./server";
+import { getBalance } from "./server";
 
 function Wallet({ address, setAddress, balance, setBalance }) {
   async function onChange(evt) {
     const address = evt.target.value;
     setAddress(address);
-    if (address) {
-      const {
-        data: { balance },
-      } = await server.get(`balance/${address}`);
-      setBalance(balance);
-    } else {
-      setBalance(0);
-    }
+    setBalance(await getBalance(address))
   }
 
   return (
